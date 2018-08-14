@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sensu
+    component: api
+  name: sensu-api
+spec:
+  ports:
+  - port: 4567
+    protocol: TCP
+    targetPort: 4567
+  selector:
+    app: sensu
+    component: api
+status:
+  loadBalancer: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sensu
+    component: api
+  name: sensu-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sensu
+      component: api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sensu
+        component: api
+    spec:
+      volumes:
+        - name: sensu-config
+          configMap:
+            name: sensu-config
+      containers:
+      - args:
+        - api
+        image: jaxxstorm/sensu:v1.2
+        ports:
+          - containerPort: 4567
+        env:
+          - name: NO_CONFIGURE_DEFAULTS
+            value: "true"
+        name: sensu-api
+        resources: {}
+        volumeMounts:
+          - name: sensu-config
+            mountPath: /etc/sensu/conf.d
+status: {}

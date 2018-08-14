@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+  config.json: |
+    {
+      "redis": {
+        "master": "mymaster",
+        "sentinels": [
+          {
+            "host": "rfs-redisfailover",
+            "port": 26379
+          }
+        ]
+      },
+      "transport": {
+        "name": "redis"
+      },
+      "api": {
+        "host": "sensu-api",
+        "port": 4567
+      },
+      "client": {
+        "deregister": true,
+        "deregistration": {
+          "handler": "deregistration"
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: sensu-config

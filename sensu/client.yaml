@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sensu-client
+  labels:
+    app: sensu
+    component: client
+spec:
+  selector:
+    matchLabels:
+      app: sensu
+      component: client
+  template:
+    metadata:
+      labels:
+        app: sensu
+        component: client
+    spec:
+      volumes:
+        - name: sensu-config
+          configMap:
+            name: sensu-config
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: sensu-client
+        args:
+          - client 
+        env:
+          - name: NO_CONFIGURE_DEFAULTS
+            value: "true"
+        image: jaxxstorm/sensu:v1.2
+        volumeMounts:
+          - name: sensu-config
+            mountPath: /etc/sensu/conf.d
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+      terminationGracePeriodSeconds: 30
