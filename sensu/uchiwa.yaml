@@ -12,7 +12,13 @@ data:
       ],
       "uchiwa": {
         "host": "0.0.0.0",
-        "port": 3000
+        "port": 3000,
+        "users": [
+          {
+          "username": "admin",
+          "password": "{crypt}$apr1$nspYCiwq$7Ef8uKpRqjdYmOFMghnAa."
+          }
+        ]
       }
     }
 kind: ConfigMap
