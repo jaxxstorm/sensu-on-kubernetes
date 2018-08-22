@@ -13,3 +13,14 @@ The rest of the components are the basic sensu building blocks, the API, server 
 # Docker
 
 The container container is located [here](https://github.com/jaxxstorm/docker-sensu) and bundles a bunch of the sensu kubernetes plugins with it.
+
+# Application Demo
+
+The application being monitored is the [weaveworks sockshop](https://github.com/microservices-demo/microservices-demo) microservice demo.
+
+It has been modified to:
+
+ - Add sidecar containers with sensu clients
+ - Add an ingress, with components for the ingress controller and [external-dns](https://github.com/kubernetes-incubator/external-dns) as well as [cert-manager](https://github.com/jetstack/cert-manager)
+
+We poll the built in health endpoint with a custom ruby script. Simple
